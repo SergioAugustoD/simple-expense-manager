@@ -53,10 +53,7 @@ const userLogin = (req: Request, res: Response) => {
   const user = req.body as User
   userModel.checkLogin(user)
     .then(user => {
-      if (user)
-        return ok(res)
-      else
-        return notFound(res)
+      res.json({ user })
     })
 }
 export const userController = {

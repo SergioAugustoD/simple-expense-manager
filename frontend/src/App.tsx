@@ -1,17 +1,16 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import './App.scss';
-import Footer from './components/Footer';
-import GridFinances from './components/GridFInances';
 import Header from './components/Header';
+import { AppRoutes } from './routes';
 
 
 function App() {
   return (
-    <div>
+    < BrowserRouter>
       <Header />
-      <GridFinances />
-      <Footer />
-    </div>
+      <AppRoutes />
+    </BrowserRouter>
   )
 }
 

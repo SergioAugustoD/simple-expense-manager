@@ -1,0 +1,12 @@
+@use "../../../scss/" as *;
+
+.finances-content {
+  display: flex;
+  flex-direction: column;
+
+  &__buttons-main {
+    display: flex;
+    justify-content: flex-end;
+    margin: 5px;
+  }
+}

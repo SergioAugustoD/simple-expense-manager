@@ -1,5 +1,6 @@
 import { dbQuery } from "../services/db";
 import { checkPassword, generatePassword } from '../services/util';
+import jwt from 'jsonwebtoken';
 
 export type User = {
   id: number;
@@ -34,11 +35,15 @@ const updateUser = async (user: User) => {
 }
 
 const checkLogin = async (user: User) => {
-  let password = await (await dbQuery(`SELECT password from users where login = ?`, [user.login]))
-  console.log(password[0].password)
-  if (await checkPassword(user.password, password[0].password)) {
-    var getUser = await dbQuery(`SELECT login,password from users where login = ?`, [user.login])
-    return getUser
+  let login = await dbQuery(`SELECT login from users where login = ?`, [user.login]);
+  let idUser = await dbQuery(`SELECT id from users where login = ? `, [user.login]);
+  if (login.length > 0) {
+    let password = await dbQuery(`SELECT password from users where login = ?`, [user.login])
+    if (await checkPassword(user.password, password[0].password)) {
+      return { msg: 'Usuário logado com sucesso!', token: jwt.sign({ id: idUser }, process.env.SECRET ?? '', { expiresIn: '8h' }) }
+    }
+  } else {
+    return { err: 'Usuário não existe' }
   }
 }
 export const userModel = {

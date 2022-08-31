@@ -2,14 +2,14 @@ import React from 'react';
 import './styles.scss'
 
 interface Props {
-  className: string;
+  className?: string;
   nameButton: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const Button = (props: Props) => {
   return (
-    <button type='button' className={props.className} onClick={props.onClick}>{props.nameButton}</button>
+    <button type='button' className={props.className ? props.className : 'button-default'} onClick={props.onClick}>{props.nameButton}</button>
   );
 };
 export default Button;
