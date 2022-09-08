@@ -1,6 +1,6 @@
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import { User, userModel } from "../models/users";
-import { badRequest, internalServerError, notFound, ok, validateNumber } from '../services/util';
+import { badRequest, internalServerError, validateNumber } from '../services/util';
 
 const insertUser = (req: Request, res: Response) => {
   {
@@ -56,8 +56,26 @@ const userLogin = (req: Request, res: Response) => {
       res.json({ user })
     })
 }
+
+const checkToken = (req: Request, res: Response, next: NextFunction) => {
+  const data = req.body;
+  userModel.checkAuthToken(data.token)
+    .then(user => {
+      res.json({ user })
+    })
+    .catch(err => {
+      res.json(err)
+    })
+
+}
+
+const logout = (req: Request, res: Response) => {
+  res.json({ user: null, token: null, auth: false })
+}
 export const userController = {
   insertUser,
   updateUser,
-  userLogin
+  userLogin,
+  logout,
+  checkToken
 }

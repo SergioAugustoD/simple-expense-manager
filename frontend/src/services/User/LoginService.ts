@@ -1,9 +1,12 @@
-import { ICreateUser } from "../../interfaces"
-import { ILogin } from "../../interfaces/User/ILogin"
+import { IUser } from "../../interfaces/User/IUser"
 import { Api } from "../../providers"
 
-const login = (data: ILogin) => Api.post<ICreateUser>('/user/login', data)
+const login = (data: IUser) => Api.post<IUser>('/user/login', data)
+const logout = () => Api.post('/user/logout');
+const checkToken = (token: string) => Api.post('user/checktoken', { token });
 
 export const LoginService = {
   login,
+  logout,
+  checkToken
 }

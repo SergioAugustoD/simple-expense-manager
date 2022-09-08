@@ -1,14 +1,14 @@
 import React from 'react';
 import './styles.scss'
-import Button from '../Button';
+import ButtonUtil from '../Button';
 
 const Header = () => {
   return (
     <div className='header-main'>
       <div className="header-main__buttons">
-        <Button className='btHome' nameButton="Home" onClick={() => console.log('Home')} />
-        <Button className='btHome' nameButton="Finanças" onClick={() => console.log('Finanças')} />
-        <Button className='btHome' nameButton="Login" onClick={() => console.log('Login')} />
+        <ButtonUtil className='btHome' title="Home" onClick={() => console.log('Home')} />
+        <ButtonUtil className='btHome' title="Finanças" onClick={() => console.log('Finanças')} />
+        <ButtonUtil className='btHome' title="Login" onClick={() => console.log('Login')} />
       </div>
     </div>
   );

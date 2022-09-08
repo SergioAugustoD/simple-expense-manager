@@ -6,10 +6,8 @@ import { CreateUserService } from "../services"
 export const useCreateUser = () => {
 
   const createUser = useCallback(async (dataUser: ICreateUser) => {
-    const { status, data } = await CreateUserService.createUser(dataUser);
-
-    console.log(data)
-
+    const { data } = await CreateUserService.createUser(dataUser);
+    return data
   }, [])
 
   return {

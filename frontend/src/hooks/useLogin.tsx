@@ -1,18 +1,20 @@
-import { useCallback } from "react"
-import { ILogin } from "../interfaces/User/ILogin"
+import { IUser } from "../interfaces/User/IUser"
 import { LoginService } from "../services/User/LoginService"
 
 
-export const useLogin = () => {
+export const useLogin = () => ({
 
-  const login = useCallback(async (dataLogin: ILogin) => {
-    const { status, data } = await LoginService.login(dataLogin);
+  login: async (dataLogin: IUser) => {
+    const { data } = await LoginService.login(dataLogin);
+    return data;
+  },
+  logout: async () => {
+    const { data } = await LoginService.logout();
 
-    console.log(data)
-
-  }, [])
-
-  return {
-    login
+    return data;
+  },
+  checkAuthToken: async (token: string) => {
+    const { data } = await LoginService.checkToken(token);
+    return data
   }
-}
+});

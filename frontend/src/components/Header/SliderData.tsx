@@ -1,23 +1,27 @@
 import React from 'react';
-import * as AiIcons from 'react-icons/ai';
+import { IconBaseProps } from 'react-icons';
+import { Link } from 'react-router-dom';
 
-export const SidebarData = [
-  {
-    title: 'Home',
-    path: '/',
-    icon: <AiIcons.AiFillHome />,
-    cName: 'nav-text'
-  },
-  {
-    title: 'Finances',
-    path: '/finances',
-    icon: <AiIcons.AiFillMoneyCollect />,
-    cName: 'nav-text'
-  },
-  {
-    title: 'Login',
-    path: '/login',
-    icon: <AiIcons.AiOutlineLogin />,
-    cName: 'nav-text'
-  }
-];
+interface PropsButtonsMenu {
+  className?: string;
+  path: string;
+  icon: IconBaseProps;
+  title: string;
+  onClick?: () => void;
+}
+
+const ButtonsMenu = (props: PropsButtonsMenu) => {
+
+  return (
+    <li className={props.className}>
+      <Link to={props.path} onClick={props.onClick}>
+        <>
+          {props.icon}
+          <span>{props.title}</span>
+        </>
+      </Link>
+    </li>
+  );
+}
+
+export default ButtonsMenu;

@@ -30,7 +30,6 @@ const updateFinance = (req: Request, res: Response) => {
       return badRequest(res, 'id inválido');
   }
   const finance = req.body as Finance
-  console.log(finance)
   financeModel.updateFinance(finance)
     .then(finance => {
       res.json({
