@@ -24,12 +24,12 @@ const insertFinance = (req: Request, res: Response) => {
 }
 
 const updateFinance = (req: Request, res: Response) => {
-  const id = parseInt(req.params.id);
+  const finance = req.body as Finance
   {
-    if (!validateNumber(id))
+    if (!validateNumber(finance.id))
       return badRequest(res, 'id inválido');
   }
-  const finance = req.body as Finance
+
   financeModel.updateFinance(finance)
     .then(finance => {
       res.json({

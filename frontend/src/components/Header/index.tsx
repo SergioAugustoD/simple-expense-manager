@@ -1,11 +1,13 @@
 import React, { useState, useContext } from 'react';
+import { AuthContext } from '../../context/Auth/AuthContext';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import ButtonsMenu from './SliderData';
 import './Navbar.css';
 import { IconContext } from 'react-icons';
-import { AuthContext } from '../../context/Auth/AuthContext';
+import Card from '@mui/material/Card'
+import { Divider } from '@mui/material';
 
 function Navbar() {
   const [sidebar, setSidebar] = useState(false);
@@ -27,6 +29,15 @@ function Navbar() {
                 <AiIcons.AiOutlineClose />
               </Link>
             </li>
+            <Card sx={{
+              backgroundColor: 'transparent',
+              color: 'white',
+              margin: '5px'
+            }}>
+              <h2>Bem vindo !</h2>
+              <Divider />
+              <h3>{`${localStorage.getItem('login')}`}</h3>
+            </Card>
             <ButtonsMenu
               icon={<AiIcons.AiFillHome />}
               className='nav-text'

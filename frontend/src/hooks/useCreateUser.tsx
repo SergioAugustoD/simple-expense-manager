@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 import { ICreateUser } from "../interfaces"
-import { CreateUserService } from "../services"
+import { CreateUserService } from "../services/User/CreateUserService"
 
 
 export const useCreateUser = () => {

@@ -40,11 +40,12 @@ const updateUser = async (user: User) => {
 const checkLogin = async (user: User) => {
   try {
     let login = await dbQuery(`SELECT login from users where login = ?`, [user.login]);
-    let idUser = await dbQuery(`SELECT id from users where login = ? `, [user.login]);
+    let idUser = await dbQuery(`SELECT id as id_user from users where login = ? `, [user.login]);
+
     if (login.length > 0) {
       let password = await dbQuery(`SELECT password from users where login = ?`, [user.login])
       if (await checkPassword(user.password, password[0].password)) {
-        return { msg: 'Usuário logado com sucesso!', login: user.login, auth: true, token: jwt.sign({ id: idUser }, process.env.SECRET ?? '', { expiresIn: '8h' }) }
+        return { msg: 'Usuário logado com sucesso!', id_user: idUser[0].id_user, login: user.login, auth: true, token: jwt.sign({ id: idUser }, process.env.SECRET ?? '', { expiresIn: '8h' }) }
       } else {
         return { err: 'Usuário ou senha incorretos! Verifique' }
       }

@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     if (data.user.login && data.user.token) {
       setUser(data.user)
       setToken(data.user.token);
+      localStorage.setItem('id_user', data.user.id_user.toString());
       ToastNotification.toastSuccess(data.user.msg);
       return data.user
     }

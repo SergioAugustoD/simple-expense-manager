@@ -5,7 +5,7 @@ const financeRouter = Router();
 financeRouter.post('/', financeController.insertFinance);
 financeRouter.get('/:id_user', financeController.listFinances)
 financeRouter.delete('/:id', financeController.deleteFinance)
-financeRouter.put('/:id', financeController.updateFinance)
+financeRouter.post('/:id', financeController.updateFinance)
 export {
   financeRouter
 };
