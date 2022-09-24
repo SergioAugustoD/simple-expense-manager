@@ -7,5 +7,5 @@ export type User = {
   msg?: string;
   token?: string;
   auth?: boolean;
-  id_user?: number;
+  id_user?: string;
 };

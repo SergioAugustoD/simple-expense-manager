@@ -1,17 +1,17 @@
-import React, { useState, useCallback } from 'react';
-import { Link } from '@mui/material';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
-import { useNavigate } from 'react-router-dom';
-import ButtonUtil from '../../Button';
-import GridFinances from '../../GridFInances';
-import Modal from '../../Modal';
-import TextField from '@mui/material/TextField';
-import './styles.scss'
-import useModal from '../../../hooks/useModal';
-import { ToastNotification } from '../../Utils/ToastNotification';
-import { useFinances } from '../../../hooks/useFinances'
+import React, { useState, useCallback } from "react";
+import { Link } from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import NativeSelect from "@mui/material/NativeSelect";
+import { useNavigate } from "react-router-dom";
+import ButtonUtil from "../../Button";
+import GridFinances from "../../GridFInances";
+import Modal from "../../Modal";
+import TextField from "@mui/material/TextField";
+import "./styles.scss";
+import useModal from "../../../hooks/useModal";
+import { ToastNotification } from "../../Utils/ToastNotification";
+import { useFinances } from "../../../hooks/useFinances";
 
 type PropInsert = {
   amount: number;
@@ -24,15 +24,15 @@ type PropInsert = {
 const Finances = () => {
   const navigate = useNavigate();
   const { insertFinance } = useFinances();
-  const [dataFinanceInsert, setDataFinanceInsert] = useState<PropInsert>({ category: '', amount: 0, description: '', type: '', id_user: parseInt(localStorage.getItem('id_user')) });
+  const [dataFinanceInsert, setDataFinanceInsert] = useState<PropInsert>({ category: "", amount: 0, description: "", type: "", id_user: parseInt(localStorage.getItem("id_user")) });
   const { isOpen, toggle } = useModal();
 
   const handleSubmit = useCallback(async () => {
-    if (dataFinanceInsert.category === '') {
-      ToastNotification.toastError('Informe a categoria ');
+    if (dataFinanceInsert.category === "") {
+      ToastNotification.toastError("Informe a categoria ");
     }
-    if (dataFinanceInsert.type === '') {
-      ToastNotification.toastError('Informe o tipo ');
+    if (dataFinanceInsert.type === "") {
+      ToastNotification.toastError("Informe o tipo ");
     }
     const data = await insertFinance(dataFinanceInsert);
     if (data.finance.err) {
@@ -83,10 +83,10 @@ const Finances = () => {
           <button onClick={handleSubmit}>Enviar </button>
         </div>
       </Modal>
-      {!localStorage.getItem('authToken') ?
+      {!localStorage.getItem("authToken") ?
         <div className="info-notlogin">
           <h2>Apenas usuários logados podem acessar esta página</h2>
-          <Link underline='hover' onClick={() => navigate('/login')} variant='inherit'>Clique aqui para logar</Link>
+          <Link underline='hover' onClick={() => navigate("/login")} variant='inherit'>Clique aqui para logar</Link>
         </div>
         :
         <div className='finances-content'>
@@ -101,6 +101,6 @@ const Finances = () => {
       }
     </div>
   );
-}
+};
 
 export default Finances;

@@ -1,6 +1,6 @@
-import React from 'react';
-import { IconBaseProps } from 'react-icons';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { IconBaseProps } from "react-icons";
+import { Link } from "react-router-dom";
 
 interface PropsButtonsMenu {
   className?: string;
@@ -22,6 +22,6 @@ const ButtonsMenu = (props: PropsButtonsMenu) => {
       </Link>
     </li>
   );
-}
+};
 
 export default ButtonsMenu;

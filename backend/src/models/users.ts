@@ -1,6 +1,6 @@
 import { dbQuery } from "../services/db";
-import { checkPassword, generatePassword } from '../services/util';
-import jwt from 'jsonwebtoken';
+import { checkPassword, generatePassword } from "../services/util";
+import jwt from "jsonwebtoken";
 
 export type User = {
   id: number;
@@ -12,70 +12,86 @@ export type User = {
 }
 
 const insertUser = async (user: User) => {
-  let getLogin = await dbQuery('SELECT login from users where login = ?', [user.login])
+  const getLogin = await dbQuery("SELECT login from users where login = ?", [user.login]);
   if (getLogin.length > 0) {
-    return { err: 'Este login já existe no banco de dados!' }
+    return { err: "Este login já existe no banco de dados!" };
   }
-  let getEmail = await dbQuery(`SELECT email from users where email = ?`, [user.email])
+  const getEmail = await dbQuery("SELECT email from users where email = ?", [user.email]);
   if (getEmail.length > 0)
-    return { err: 'Este e-mail já existe no banco de dados!' }
+    return { err: "Este e-mail já existe no banco de dados!" };
   else
     await dbQuery(`INSERT INTO users (name,email,login,password) 
-    VALUES(?,?,?,?)`, [user.name, user.email, user.login, await generatePassword(user.password)])
-  return { msg: 'Usuário criado com sucesso!' };
-}
+    VALUES(?,?,?,?)`, [user.name, user.email, user.login, await generatePassword(user.password)]);
+  return { msg: "Usuário criado com sucesso!" };
+};
 
 const updateUser = async (user: User) => {
   if (user.name)
-    await dbQuery(`UPDATE users SET name = ? WHERE ID = ? `, [user.name, user.id])
+    await dbQuery("UPDATE users SET name = ? WHERE ID = ? ", [user.name, user.id]);
   if (user.login)
-    await dbQuery(`UPDATE users SET login = ? WHERE ID = ? `, [user.login, user.id])
+    await dbQuery("UPDATE users SET login = ? WHERE ID = ? ", [user.login, user.id]);
   if (user.password)
-    await dbQuery(`UPDATE users SET password = ? WHERE ID = ? `, [await generatePassword(user.password), user.id])
+    await dbQuery("UPDATE users SET password = ? WHERE ID = ? ", [await generatePassword(user.password), user.id]);
 
-  let retorno = await dbQuery(`SELECT * FROM users where id = ? `, [user.id]);
+  const retorno = await dbQuery("SELECT * FROM users where id = ? ", [user.id]);
   return retorno[0];
-}
+};
 
-const checkLogin = async (user: User) => {
+const getNameUser = async (id_user: number) => {
   try {
-    let login = await dbQuery(`SELECT login from users where login = ?`, [user.login]);
-    let idUser = await dbQuery(`SELECT id as id_user from users where login = ? `, [user.login]);
+    console.log(id_user);
+    const nameUser = await dbQuery("SELECT name from users where id = ? ", [id_user]);
 
-    if (login.length > 0) {
-      let password = await dbQuery(`SELECT password from users where login = ?`, [user.login])
-      if (await checkPassword(user.password, password[0].password)) {
-        return { msg: 'Usuário logado com sucesso!', id_user: idUser[0].id_user, login: user.login, auth: true, token: jwt.sign({ id: idUser }, process.env.SECRET ?? '', { expiresIn: '8h' }) }
-      } else {
-        return { err: 'Usuário ou senha incorretos! Verifique' }
-      }
+    console.log(nameUser);
+    if (nameUser.length > 0) {
+      return { nameUser: nameUser[0].name };
     } else {
-      return { err: 'Usuário não existe' }
+      return;
     }
   } catch (error) {
-    console.log(error)
-    return { err: error }
+    console.log(error);
+  }
+};
+const checkLogin = async (user: User) => {
+  try {
+    const login = await dbQuery("SELECT login from users where login = ?", [user.login]);
+    const idUser = await dbQuery("SELECT id as id_user from users where login = ? ", [user.login]);
+
+    if (login.length > 0) {
+      const password = await dbQuery("SELECT password from users where login = ?", [user.login]);
+      if (await checkPassword(user.password, password[0].password)) {
+        return { msg: "Usuário logado com sucesso!", id_user: idUser[0].id_user, login: user.login, auth: true, token: jwt.sign({ id: idUser }, process.env.SECRET ?? "", { expiresIn: "8h" }) };
+      } else {
+        return { err: "Usuário ou senha incorretos! Verifique" };
+      }
+    } else {
+      return { err: "Usuário não existe" };
+    }
+  } catch (error) {
+    console.log(error);
+    return { err: error };
   }
 
-}
+};
 
 const checkAuthToken = async (token: string) => {
   if (!token) {
-    return { err: 'Não contem token!' }
+    return { err: "Não contem token!" };
   }
   const tokenDecoded = jwt.verify(token, process.env.SECRET!);
 
   if (tokenDecoded) {
 
-    return { msg: 'Usuário autorizado', auth: true, token: token }
+    return { msg: "Usuário autorizado", auth: true, token: token };
 
   } else {
-    return { err: 'Usuário não autorizado', auth: true }
+    return { err: "Usuário não autorizado", auth: true };
   }
-}
+};
 export const userModel = {
   insertUser,
   updateUser,
   checkLogin,
-  checkAuthToken
-}
+  checkAuthToken,
+  getNameUser
+};

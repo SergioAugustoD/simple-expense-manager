@@ -1,16 +1,16 @@
-import { useCallback } from "react"
-import { ICreateUser } from "../interfaces"
-import { CreateUserService } from "../services/User/CreateUserService"
+import { useCallback } from "react";
+import { ICreateUser } from "../interfaces";
+import { UserService } from "../services/User/UserService";
 
 
 export const useCreateUser = () => {
 
   const createUser = useCallback(async (dataUser: ICreateUser) => {
-    const { data } = await CreateUserService.createUser(dataUser);
-    return data
-  }, [])
+    const { data } = await UserService.createUser(dataUser);
+    return data;
+  }, []);
 
   return {
     createUser
-  }
-}
+  };
+};

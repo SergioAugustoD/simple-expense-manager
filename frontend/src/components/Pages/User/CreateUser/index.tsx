@@ -1,20 +1,20 @@
-import { Box, Container } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import React, { useCallback, useState } from 'react';
-import { useCreateUser } from '../../../../hooks/useCreateUser';
-import { ICreateUser } from '../../../../interfaces';
-import ButtonUtil from '../../../Button';
-import TextField from '@mui/material/TextField';
-import SendIcon from '@mui/icons-material/Send';
+import { Box, Container } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import React, { useCallback, useState } from "react";
+import { useCreateUser } from "../../../../hooks/useCreateUser";
+import { ICreateUser } from "../../../../interfaces";
+import ButtonUtil from "../../../Button";
+import TextField from "@mui/material/TextField";
+import SendIcon from "@mui/icons-material/Send";
 
-import './styles.scss'
-import { ToastNotification } from '../../../Utils/ToastNotification';
+import "./styles.scss";
+import { ToastNotification } from "../../../Utils/ToastNotification";
 
 const CreateUser = () => {
 
   const navigate = useNavigate();
   const { createUser } = useCreateUser();
-  const [dataUser, setDataUser] = useState<ICreateUser>({ name: '', email: '', login: '', password: '' });
+  const [dataUser, setDataUser] = useState<ICreateUser>({ name: "", email: "", login: "", password: "" });
 
   const handleSubmit = useCallback(async () => {
     const data = await createUser(dataUser);
@@ -22,7 +22,7 @@ const CreateUser = () => {
       ToastNotification.toastError(data.user.err);
     }
     ToastNotification.toastSuccess(data.user.msg);
-    navigate('/login');
+    navigate("/login");
   }, [navigate, createUser, dataUser]);
 
   return (
@@ -39,6 +39,6 @@ const CreateUser = () => {
     </>
 
   );
-}
+};
 
 export default CreateUser;

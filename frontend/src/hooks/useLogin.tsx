@@ -1,5 +1,5 @@
-import { IUser } from "../interfaces/User/IUser"
-import { LoginService } from "../services/User/LoginService"
+import { IUser } from "../interfaces/User/IUser";
+import { LoginService } from "../services/User/LoginService";
 
 
 export const useLogin = () => ({
@@ -15,6 +15,6 @@ export const useLogin = () => ({
   },
   checkAuthToken: async (token: string) => {
     const { data } = await LoginService.checkToken(token);
-    return data
+    return data;
   }
 });

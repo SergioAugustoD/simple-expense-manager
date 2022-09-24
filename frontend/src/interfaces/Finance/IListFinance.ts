@@ -1,6 +1,6 @@
 export interface IFinance {
   finances: IListFinance;
-};
+}
 
 export interface IListFinance {
   id?: number;

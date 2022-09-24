@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Box } from '@mui/material';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
-import './styles.scss'
-import { useFinances } from '../../hooks/useFinances';
-import { DataGrid, GridCallbackDetails, GridColumnVisibilityModel, GridRowClassNameParams, GridRowParams, GridValueFormatterParams, MuiEvent } from '@mui/x-data-grid';
+import React, { useState, useEffect } from "react";
+import { Box } from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import NativeSelect from "@mui/material/NativeSelect";
+import "./styles.scss";
+import { useFinances } from "../../hooks/useFinances";
+import { DataGrid, GridColumnVisibilityModel, GridRowClassNameParams, GridRowParams, GridValueFormatterParams } from "@mui/x-data-grid";
 import Modal from "../Modal";
 import useModal from "../../hooks/useModal";
-import TextField from '@mui/material/TextField';
-import { ToastNotification } from '../Utils/ToastNotification';
+import TextField from "@mui/material/TextField";
+import { ToastNotification } from "../Utils/ToastNotification";
 
 type PropUpdate = {
   id: number;
@@ -24,29 +24,29 @@ const GridFinances = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [total, setTotal] = useState(0);
   const { getListFinances, updateFinance } = useFinances();
-  const [dataFinanceUpdate, setDataFinanceUpdate] = useState<PropUpdate>({ id: null, category: '', amount: 0, description: '', type: '' });
+  const [dataFinanceUpdate, setDataFinanceUpdate] = useState<PropUpdate>({ id: null, category: "", amount: 0, description: "", type: "" });
   const { isOpen, toggle } = useModal();
 
-  const currencyFormatter = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
+  const currencyFormatter = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
   });
 
   const columns = [
     {
-      field: 'id',
-      headerName: '#',
+      field: "id",
+      headerName: "#",
       width: 90,
       hideable: true
     },
     {
-      field: 'category',
-      headerName: 'Categoria',
+      field: "category",
+      headerName: "Categoria",
       flex: 0.2,
     },
     {
-      field: 'amount',
-      headerName: 'Valor',
+      field: "amount",
+      headerName: "Valor",
       flex: 0.4,
       valueFormatter: (params: GridValueFormatterParams) => {
         if (!params.value) {
@@ -56,13 +56,13 @@ const GridFinances = () => {
       },
     },
     {
-      field: 'description',
-      headerName: 'Descrição',
+      field: "description",
+      headerName: "Descrição",
       flex: 1,
     },
     {
-      field: 'type',
-      headerName: 'Tipo',
+      field: "type",
+      headerName: "Tipo",
       flex: 0.2
     }
   ];
@@ -80,27 +80,27 @@ const GridFinances = () => {
         }
         ToastNotification.toastSuccess(res.finance.msg);
         toggle();
-      })
+      });
 
   };
 
   useEffect(() => {
     const getFinances = async () => {
-      const data = await getListFinances(parseInt(localStorage.getItem('id_user')));
+      const data = await getListFinances(parseInt(localStorage.getItem("id_user")));
       if (data) {
-        var caclTotal = data.reduce((sum: number, finance: any) => {
-          if (finance.type === 'Despesa')
+        const caclTotal = data.reduce((sum: number, finance: any) => {
+          if (finance.type === "Despesa")
             return sum - parseFloat(finance.amount);
           else
             return sum + parseFloat(finance.amount);
         }, 0);
         setDataFinance(data);
-        setTotal(caclTotal)
+        setTotal(caclTotal);
         setIsLoading(false);
       }
-    }
+    };
     getFinances();
-  }, [getListFinances, isOpen])
+  }, [getListFinances, isOpen]);
 
   return (
     <div className="container">
@@ -147,22 +147,22 @@ const GridFinances = () => {
         </Modal>
         <DataGrid
           sx={{
-            '.MuiDataGrid-row:hover': {
-              opacity: '1'
+            ".MuiDataGrid-row:hover": {
+              opacity: "1"
             },
-            '& .MuiDataGrid-row.Mui-selected': {
-              backgroundColor: 'rgba(215, 207, 211, 0.8)'
+            "& .MuiDataGrid-row.Mui-selected": {
+              backgroundColor: "rgba(215, 207, 211, 0.8)"
             },
-            '.MuiDataGrid-cell.MuiDataGrid-cell--textLeft': {
-              border: 'none',
-              outline: 'none',
-              fontSize: '20px'
+            ".MuiDataGrid-cell.MuiDataGrid-cell--textLeft": {
+              border: "none",
+              outline: "none",
+              fontSize: "20px"
             },
-            '.MuiDataGrid-selectedRowCount.css-de9k3v-MuiDataGrid-selectedRowCount': {
-              display: 'none'
+            ".MuiDataGrid-selectedRowCount.css-de9k3v-MuiDataGrid-selectedRowCount": {
+              display: "none"
             },
-            '.MuiTablePagination-root.css-rtrcn9-MuiTablePagination-root': {
-              margin: '0 0 0 auto'
+            ".MuiTablePagination-root.css-rtrcn9-MuiTablePagination-root": {
+              margin: "0 0 0 auto"
             }
           }}
           columnVisibilityModel={columnVisibilityModel}
@@ -176,25 +176,25 @@ const GridFinances = () => {
           pageSize={10}
           rowsPerPageOptions={[10]}
           getRowClassName={(params: GridRowClassNameParams) => {
-            if (params.row.type === 'Receita') {
-              return 'rowGreen'
+            if (params.row.type === "Receita") {
+              return "rowGreen";
             }
-            if (params.row.type === 'Despesa') {
-              return 'rowRed'
+            if (params.row.type === "Despesa") {
+              return "rowRed";
             }
           }}
           autoHeight={true}
           density='standard'
-          onRowDoubleClick={(params: GridRowParams, event: MuiEvent<React.MouseEvent>, details: GridCallbackDetails) => {
+          onRowDoubleClick={(params: GridRowParams) => {
             setDataFinanceUpdate({ id: params.row.id, amount: params.row.amount, category: params.row.category, description: params.row.description, type: params.row.type });
-            toggle()
+            toggle();
           }}
         />
       </Box>
-      <h2 className={`${Math.sign(total) >= 0 ? 'positiveTotal' : 'negativeTotal'}`}>Total: {currencyFormatter.format(total)}</h2>
+      <h2 className={`${Math.sign(total) >= 0 ? "positiveTotal" : "negativeTotal"}`}>Total: {currencyFormatter.format(total)}</h2>
     </div>
 
   );
-}
+};
 
-export default GridFinances
+export default GridFinances;
