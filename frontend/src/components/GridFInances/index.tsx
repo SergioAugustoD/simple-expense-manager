@@ -14,7 +14,6 @@ import { ToastNotification } from "../Utils/ToastNotification";
 type PropUpdate = {
   id: number;
   amount: number;
-  category: string;
   description: string;
   type: string;
 }
@@ -24,7 +23,7 @@ const GridFinances = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [total, setTotal] = useState(0);
   const { getListFinances, updateFinance } = useFinances();
-  const [dataFinanceUpdate, setDataFinanceUpdate] = useState<PropUpdate>({ id: null, category: "", amount: 0, description: "", type: "" });
+  const [dataFinanceUpdate, setDataFinanceUpdate] = useState<PropUpdate>({ id: null, amount: 0, description: "", type: "" });
   const { isOpen, toggle } = useModal();
 
   const currencyFormatter = new Intl.NumberFormat("pt-BR", {
@@ -38,11 +37,6 @@ const GridFinances = () => {
       headerName: "#",
       width: 90,
       hideable: true
-    },
-    {
-      field: "category",
-      headerName: "Categoria",
-      flex: 0.2,
     },
     {
       field: "amount",
@@ -63,7 +57,14 @@ const GridFinances = () => {
     {
       field: "type",
       headerName: "Tipo",
-      flex: 0.2
+      flex: 0.2,
+      valueFormatter: (params: GridValueFormatterParams) => {
+        if (params.value === "S") {
+          return "Saida";
+        } else {
+          return "Entrada";
+        }
+      },
     }
   ];
 
@@ -89,7 +90,7 @@ const GridFinances = () => {
       const data = await getListFinances(parseInt(localStorage.getItem("id_user")));
       if (data) {
         const caclTotal = data.reduce((sum: number, finance: any) => {
-          if (finance.type === "Despesa")
+          if (finance.type === "S")
             return sum - parseFloat(finance.amount);
           else
             return sum + parseFloat(finance.amount);
@@ -108,20 +109,6 @@ const GridFinances = () => {
         {/* <button onClick={toggle} disabled={dataFinanceUpdate.id ? false : true}>Open Modal </button> */}
         <Modal isOpen={isOpen} toggle={toggle}>
           <div>
-            <FormControl>
-              <InputLabel id="demo-simple-select-label">Categoria</InputLabel>
-              <NativeSelect
-                defaultValue={dataFinanceUpdate.category}
-                onChange={(e) => setDataFinanceUpdate({ ...dataFinanceUpdate, category: e.target.value })}
-              >
-                <option value='Cartão'>Cartão</option>
-                <option value='Casa'>Casa</option>
-                <option value='Filhos'>Filhos</option>
-                <option value='Pets'>Pets</option>
-                <option value='Automóvel'>Automóvel</option>
-              </NativeSelect>
-
-            </FormControl>
             <TextField
               label='Valor'
               defaultValue={dataFinanceUpdate.amount}
@@ -138,8 +125,8 @@ const GridFinances = () => {
                 defaultValue={dataFinanceUpdate.type}
                 onChange={(e) => setDataFinanceUpdate({ ...dataFinanceUpdate, type: e.target.value })}
               >
-                <option value='Despesa'>Despesa</option>
-                <option value='Receita'>Receita</option>
+                <option value='S'>Saida</option>
+                <option value='E'>Entrada</option>
               </NativeSelect>
             </FormControl>
             <button onClick={handleSubmit}>Enviar </button>
@@ -176,17 +163,17 @@ const GridFinances = () => {
           pageSize={10}
           rowsPerPageOptions={[10]}
           getRowClassName={(params: GridRowClassNameParams) => {
-            if (params.row.type === "Receita") {
+            if (params.row.type === "E") {
               return "rowGreen";
             }
-            if (params.row.type === "Despesa") {
+            if (params.row.type === "S") {
               return "rowRed";
             }
           }}
           autoHeight={true}
           density='standard'
           onRowDoubleClick={(params: GridRowParams) => {
-            setDataFinanceUpdate({ id: params.row.id, amount: params.row.amount, category: params.row.category, description: params.row.description, type: params.row.type });
+            setDataFinanceUpdate({ id: params.row.id, amount: params.row.amount, description: params.row.description, type: params.row.type });
             toggle();
           }}
         />

@@ -2,7 +2,6 @@ import { dbQuery } from "../services/db";
 
 export type Finance = {
   id?: number;
-  category: string;
   amount: number;
   description: string;
   type: string;
@@ -12,10 +11,9 @@ export type Finance = {
 
 const insertFinance = async (finance: Finance) => {
   try {
-    const data = await dbQuery(`INSERT INTO finance (category,amount,description,type,id_user) 
-      VALUES(?,?,?,?,?)`, [finance.category, finance.amount, finance.description, finance.type, finance.id_user]);
-    console.log(data);
-    return { msg: "Criado com sucesso!" };
+    const data = await dbQuery(`INSERT INTO finance (amount,description,type,id_user) 
+      VALUES(?,?,?,?)`, [finance.amount, finance.description, finance.type, finance.id_user]);
+    return { msg: "Criado com sucesso!", data: data };
   } catch (error: any) {
     return { err: error.message };
   }
@@ -23,8 +21,6 @@ const insertFinance = async (finance: Finance) => {
 
 const updateFinance = async (finance: Finance) => {
   try {
-    if (finance.category)
-      await dbQuery("UPDATE finance SET category = ? WHERE ID = ? ", [finance.category, finance.id]);
     if (finance.amount)
       await dbQuery("UPDATE finance SET amount = ? WHERE ID = ? ", [finance.amount, finance.id]);
     if (finance.description)

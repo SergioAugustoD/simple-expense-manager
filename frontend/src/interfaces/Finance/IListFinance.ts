@@ -4,7 +4,6 @@ export interface IFinance {
 
 export interface IListFinance {
   id?: number;
-  category?: string;
   amount?: number;
   description?: string;
   type?: string;

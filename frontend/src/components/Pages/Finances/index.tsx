@@ -15,7 +15,6 @@ import { useFinances } from "../../../hooks/useFinances";
 
 type PropInsert = {
   amount: number;
-  category: string;
   description: string;
   type: string;
   id_user: number;
@@ -24,13 +23,10 @@ type PropInsert = {
 const Finances = () => {
   const navigate = useNavigate();
   const { insertFinance } = useFinances();
-  const [dataFinanceInsert, setDataFinanceInsert] = useState<PropInsert>({ category: "", amount: 0, description: "", type: "", id_user: parseInt(localStorage.getItem("id_user")) });
+  const [dataFinanceInsert, setDataFinanceInsert] = useState<PropInsert>({ amount: 0, description: "", type: "", id_user: parseInt(localStorage.getItem("id_user")) });
   const { isOpen, toggle } = useModal();
 
   const handleSubmit = useCallback(async () => {
-    if (dataFinanceInsert.category === "") {
-      ToastNotification.toastError("Informe a categoria ");
-    }
     if (dataFinanceInsert.type === "") {
       ToastNotification.toastError("Informe o tipo ");
     }
@@ -47,27 +43,13 @@ const Finances = () => {
       <Modal isOpen={isOpen} toggle={toggle}>
         <div>
           <FormControl>
-            <InputLabel id="demo-simple-select-label">Categoria</InputLabel>
-            <NativeSelect
-              onChange={(e) => setDataFinanceInsert({ ...dataFinanceInsert, category: e.target.value })}
-            >
-              <option value='#'>#</option>
-              <option value='Cartão'>Cartão</option>
-              <option value='Casa'>Casa</option>
-              <option value='Filhos'>Filhos</option>
-              <option value='Pets'>Pets</option>
-              <option value='Automóvel'>Automóvel</option>
-            </NativeSelect>
-
-          </FormControl>
-          <FormControl>
             <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
             <NativeSelect
               onChange={(e) => setDataFinanceInsert({ ...dataFinanceInsert, type: e.target.value })}
             >
               <option value='#'>#</option>
-              <option value='Despesa'>Despesa</option>
-              <option value='Receita'>Receita</option>
+              <option value='S'>Saida</option>
+              <option value='E'>Entrada</option>
             </NativeSelect>
           </FormControl>
           <TextField

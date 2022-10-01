@@ -6,8 +6,6 @@ const insertFinance = (req: Request, res: Response) => {
   {
     const finance = req.body;
 
-    if (!finance.category)
-      return badRequest(res, "Informe a categoria!");
     if (!validateNumber(finance.amount))
       return badRequest(res, "Informe o valor");
     if (!finance.type)
