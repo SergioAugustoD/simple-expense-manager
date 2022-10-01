@@ -4,11 +4,11 @@ import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 import { Link } from "react-router-dom";
 import ButtonsMenu from "./SliderData";
-import "./Navbar.css";
 import { IconContext } from "react-icons";
 import Card from "@mui/material/Card";
 import { Divider } from "@mui/material";
 import { UserService } from "../../services/User/UserService";
+import { CardS, NavBarS, NavS } from "./styles";
 
 function Navbar() {
   const auth = useContext(AuthContext);
@@ -34,31 +34,28 @@ function Navbar() {
   return (
     <>
       <IconContext.Provider value={{ color: "#fff" }}>
-        <div className='navbar'>
+        <NavBarS>
           <Link to='#' className='menu-bars'>
             <FaIcons.FaBars onClick={showSidebar} />
           </Link>
-        </div>
-        <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
+        </NavBarS>
+        <NavS className={sidebar ? "nav-menu active" : "nav-menu"}>
           <ul className='nav-menu-items' onClick={showSidebar}>
             <li className='navbar-toggle'>
               <Link to='#' className='menu-bars'>
                 <AiIcons.AiOutlineClose />
               </Link>
             </li>
-            <Card sx={{
-              backgroundColor: "transparent",
-              color: "white",
-              margin: "5px"
-            }}>
+            <CardS>
               <Divider />
               {auth.user &&
                 <>
-                  <h2>Bem vindo !</h2>
-                  <h3>{`${name.nameUser}`}</h3>
+                  <div className="text-welcome">
+                    {<FaIcons.FaRegUserCircle size='1.2em' />}<h3>{`${name.nameUser}`}</h3>
+                  </div>
                 </>
               }
-            </Card>
+            </CardS>
             <ButtonsMenu
               icon={<AiIcons.AiFillHome />}
               className='nav-text'
@@ -89,7 +86,7 @@ function Navbar() {
               />
             }
           </ul>
-        </nav>
+        </NavS>
       </IconContext.Provider>
     </>
   );

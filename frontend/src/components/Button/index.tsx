@@ -1,11 +1,10 @@
 import React from "react";
-import Button from "@mui/material/Button";
-import "./styles.scss";
 import { ButtonProps } from "@mui/material";
+import { ButtonS } from "./styles";
 
 const ButtonUtil = (props: ButtonProps) => {
   return (
-    <Button
+    <ButtonS
       className={props.className ? props.className : "button-default"}
       variant={props.variant}
       onClick={props.onClick}
@@ -16,7 +15,7 @@ const ButtonUtil = (props: ButtonProps) => {
       fullWidth={props.fullWidth}
     >
       {props.title}
-    </Button>
+    </ButtonS>
   );
 };
 export default ButtonUtil;

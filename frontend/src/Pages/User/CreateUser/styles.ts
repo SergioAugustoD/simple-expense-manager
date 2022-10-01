@@ -1,13 +1,14 @@
-@use "../../../../scss/" as *;
+import { Container } from "@mui/material";
+import styled from "styled-components";
 
-.container-main {
+export const ContainerS = styled(Container)`
   margin-top: 100px;
 
-  &__box-main {
+  .box-main {
     display: flex;
     flex-direction: column;
 
-    &__buttons {
+    &.buttons {
       display: flex;
       justify-content: center;
 
@@ -16,4 +17,4 @@
       }
     }
   }
-}
+`;

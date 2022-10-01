@@ -3,13 +3,13 @@ import { Box } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
-import "./styles.scss";
 import { useFinances } from "../../hooks/useFinances";
-import { DataGrid, GridColumnVisibilityModel, GridRowClassNameParams, GridRowParams, GridValueFormatterParams } from "@mui/x-data-grid";
+import { GridColumnVisibilityModel, GridRowClassNameParams, GridRowParams, GridValueFormatterParams } from "@mui/x-data-grid";
 import Modal from "../Modal";
 import useModal from "../../hooks/useModal";
 import TextField from "@mui/material/TextField";
 import { ToastNotification } from "../Utils/ToastNotification";
+import { DataGridS, H2Total } from "./styles";
 
 type PropUpdate = {
   id: number;
@@ -132,7 +132,7 @@ const GridFinances = () => {
             <button onClick={handleSubmit}>Enviar </button>
           </div>
         </Modal>
-        <DataGrid
+        <DataGridS
           sx={{
             ".MuiDataGrid-row:hover": {
               opacity: "1"
@@ -178,7 +178,7 @@ const GridFinances = () => {
           }}
         />
       </Box>
-      <h2 className={`${Math.sign(total) >= 0 ? "positiveTotal" : "negativeTotal"}`}>Total: {currencyFormatter.format(total)}</h2>
+      <H2Total className={`${Math.sign(total) >= 0 ? "positiveTotal" : "negativeTotal"}`}>Total: {currencyFormatter.format(total)}</H2Total>
     </div>
 
   );

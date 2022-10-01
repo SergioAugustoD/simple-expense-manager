@@ -1,10 +1,11 @@
 import React from "react";
+import { HomeS } from "./styles";
 
 function Home() {
   return (
-    <div className='home'>
+    <HomeS>
       <h1>Home</h1>
-    </div>
+    </HomeS>
   );
 }
 

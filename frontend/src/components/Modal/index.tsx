@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import { ModalBox, ModalOverlay } from "./styles";
 
 interface ModalType {
   children?: ReactNode;
@@ -10,11 +11,11 @@ export default function Modal(props: ModalType) {
   return (
     <>
       {props.isOpen && (
-        <div className="modal-overlay" onClick={props.toggle}>
-          <div onClick={(e) => e.stopPropagation()} className="modal-box">
+        <ModalOverlay onClick={props.toggle}>
+          <ModalBox onClick={(e) => e.stopPropagation()}>
             {props.children}
-          </div>
-        </div>
+          </ModalBox>
+        </ModalOverlay>
       )}
     </>
   );

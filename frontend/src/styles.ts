@@ -1,7 +1,6 @@
-@use "./scss/" as *;
+import { createGlobalStyle } from "styled-components";
 
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&display=swap");
-
+export default createGlobalStyle`
 * {
   padding: 0;
   margin: 0;
@@ -11,14 +10,6 @@
 
 html {
   font-size: 100%;
-
-  @include tablet {
-    font-size: 80%;
-  }
-
-  @include mobile {
-    font-size: 60%;
-  }
 }
 
 body {
@@ -30,8 +21,4 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: black;
 }
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+`;

@@ -1,11 +1,11 @@
 import React from "react";
 
 import { Route, Routes } from "react-router-dom";
-import Finances from "../components/Pages/Finances";
-import Login from "../components/Pages/User/Login";
+import Finances from "../Pages/Finances";
+import Login from "../Pages/User/Login";
 
-import Home from "./../components/Pages/Home";
-import CreateUser from "./../components/Pages/User/CreateUser/index";
+import Home from "../Pages/Home";
+import CreateUser from "../Pages/User/CreateUser/index";
 
 export const AppRoutes = () => {
   return (

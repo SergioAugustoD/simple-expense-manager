@@ -4,14 +4,14 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
 import { useNavigate } from "react-router-dom";
-import ButtonUtil from "../../Button";
-import GridFinances from "../../GridFInances";
-import Modal from "../../Modal";
+import ButtonUtil from "../../components/Button";
+import GridFinances from "../../components/GridFInances";
+import Modal from "../../components/Modal";
 import TextField from "@mui/material/TextField";
-import "./styles.scss";
-import useModal from "../../../hooks/useModal";
-import { ToastNotification } from "../../Utils/ToastNotification";
-import { useFinances } from "../../../hooks/useFinances";
+import useModal from "../../hooks/useModal";
+import { ToastNotification } from "../../components/Utils/ToastNotification";
+import { useFinances } from "../../hooks/useFinances";
+import { FinancesContent, InfoNotLogin } from "./styles";
 
 type PropInsert = {
   amount: number;
@@ -66,19 +66,19 @@ const Finances = () => {
         </div>
       </Modal>
       {!localStorage.getItem("authToken") ?
-        <div className="info-notlogin">
+        <InfoNotLogin>
           <h2>Apenas usuários logados podem acessar esta página</h2>
           <Link underline='hover' onClick={() => navigate("/login")} variant='inherit'>Clique aqui para logar</Link>
-        </div>
+        </InfoNotLogin>
         :
-        <div className='finances-content'>
-          <div className="finances-content__buttons-main">
-            <ButtonUtil title="Adicionar" onClick={toggle} />
+        <FinancesContent>
+          <div className="buttons-main">
+            <ButtonUtil title="Adicionar" onClick={toggle} className="bt-add" variant="contained" />
           </div>
-          <div className="finances-content__grid-data">
+          <div className="grid-data">
             <GridFinances />
           </div>
-        </div>
+        </FinancesContent>
 
       }
     </div>
