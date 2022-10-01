@@ -39,10 +39,8 @@ const updateUser = async (user: User) => {
 
 const getNameUser = async (id_user: number) => {
   try {
-    console.log(id_user);
     const nameUser = await dbQuery("SELECT name from users where id = ? ", [id_user]);
 
-    console.log(nameUser);
     if (nameUser.length > 0) {
       return { nameUser: nameUser[0].name };
     } else {
