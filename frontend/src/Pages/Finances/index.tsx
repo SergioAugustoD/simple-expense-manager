@@ -39,31 +39,29 @@ const Finances = () => {
     window.location.reload();
   }, [dataFinanceInsert, insertFinance, toggle]);
   return (
-    <div>
+    <div >
       <Modal isOpen={isOpen} toggle={toggle}>
-        <div>
-          <FormControl>
-            <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
-            <NativeSelect
-              onChange={(e) => setDataFinanceInsert({ ...dataFinanceInsert, type: e.target.value })}
-            >
-              <option value='#'>#</option>
-              <option value='S'>Saida</option>
-              <option value='E'>Entrada</option>
-            </NativeSelect>
-          </FormControl>
-          <TextField
-            label='Valor'
-            defaultValue={dataFinanceInsert.amount}
-            onChange={(e) => setDataFinanceInsert({ ...dataFinanceInsert, amount: parseFloat(e.target.value) })}
-          />
-          <TextField
-            label='Descrição'
-            defaultValue={dataFinanceInsert.description}
-            onChange={(e) => setDataFinanceInsert({ ...dataFinanceInsert, description: e.target.value })}
-          />
-          <button onClick={handleSubmit}>Enviar </button>
-        </div>
+        <FormControl>
+          <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
+          <NativeSelect
+            onChange={(e) => setDataFinanceInsert({ ...dataFinanceInsert, type: e.target.value })}
+          >
+            <option value='#'>#</option>
+            <option value='S'>Saida</option>
+            <option value='E'>Entrada</option>
+          </NativeSelect>
+        </FormControl>
+        <TextField
+          label='Valor'
+          defaultValue={dataFinanceInsert.amount}
+          onChange={(e) => setDataFinanceInsert({ ...dataFinanceInsert, amount: parseFloat(e.target.value) })}
+        />
+        <TextField
+          label='Descrição'
+          defaultValue={dataFinanceInsert.description}
+          onChange={(e) => setDataFinanceInsert({ ...dataFinanceInsert, description: e.target.value })}
+        />
+        <button onClick={handleSubmit}>Enviar </button>
       </Modal>
       {!localStorage.getItem("authToken") ?
         <InfoNotLogin>

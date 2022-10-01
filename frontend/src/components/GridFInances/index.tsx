@@ -104,33 +104,31 @@ const GridFinances = () => {
   }, [getListFinances, isOpen]);
 
   return (
-    <div className="container">
+    <div>
       <Box>
         {/* <button onClick={toggle} disabled={dataFinanceUpdate.id ? false : true}>Open Modal </button> */}
         <Modal isOpen={isOpen} toggle={toggle}>
-          <div>
-            <TextField
-              label='Valor'
-              defaultValue={dataFinanceUpdate.amount}
-              onChange={(e) => setDataFinanceUpdate({ ...dataFinanceUpdate, amount: parseFloat(e.target.value) })}
-            />
-            <TextField
-              label='Descrição'
-              defaultValue={dataFinanceUpdate.description}
-              onChange={(e) => setDataFinanceUpdate({ ...dataFinanceUpdate, description: e.target.value })}
-            />
-            <FormControl>
-              <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
-              <NativeSelect
-                defaultValue={dataFinanceUpdate.type}
-                onChange={(e) => setDataFinanceUpdate({ ...dataFinanceUpdate, type: e.target.value })}
-              >
-                <option value='S'>Saida</option>
-                <option value='E'>Entrada</option>
-              </NativeSelect>
-            </FormControl>
-            <button onClick={handleSubmit}>Enviar </button>
-          </div>
+          <FormControl>
+            <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
+            <NativeSelect
+              defaultValue={dataFinanceUpdate.type}
+              onChange={(e) => setDataFinanceUpdate({ ...dataFinanceUpdate, type: e.target.value })}
+            >
+              <option value='S'>Saida</option>
+              <option value='E'>Entrada</option>
+            </NativeSelect>
+          </FormControl>
+          <TextField
+            label='Valor'
+            defaultValue={dataFinanceUpdate.amount}
+            onChange={(e) => setDataFinanceUpdate({ ...dataFinanceUpdate, amount: parseFloat(e.target.value) })}
+          />
+          <TextField
+            label='Descrição'
+            defaultValue={dataFinanceUpdate.description}
+            onChange={(e) => setDataFinanceUpdate({ ...dataFinanceUpdate, description: e.target.value })}
+          />
+          <button onClick={handleSubmit}>Enviar </button>
         </Modal>
         <DataGridS
           sx={{

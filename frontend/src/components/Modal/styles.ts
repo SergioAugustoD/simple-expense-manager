@@ -28,9 +28,16 @@ export const ModalOverlay = styled.div`
 `;
 
 export const ModalBox = styled.div`
-  display: block;
+  display: flex;
   background: white;
   height: 30%;
+  width: 30vw;
   padding: 1rem;
   border-radius: 1rem;
+  flex-direction: column;
+
+  .main-inputs {
+    display: flex;
+    flex-direction: column;
+  }
 `;

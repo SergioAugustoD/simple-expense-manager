@@ -1,3 +1,4 @@
+import { Stack } from "@mui/system";
 import React, { ReactNode } from "react";
 import { ModalBox, ModalOverlay } from "./styles";
 
@@ -13,7 +14,11 @@ export default function Modal(props: ModalType) {
       {props.isOpen && (
         <ModalOverlay onClick={props.toggle}>
           <ModalBox onClick={(e) => e.stopPropagation()}>
-            {props.children}
+            <div className="main-inputs">
+              <Stack spacing={2}>
+                {props.children}
+              </Stack>
+            </div>
           </ModalBox>
         </ModalOverlay>
       )}
