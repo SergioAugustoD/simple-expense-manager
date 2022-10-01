@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import React, { useCallback, useState } from "react";
-import { useCreateUser } from "../../../hooks/useCreateUser";
+import { useCreateUser } from "../../../hooks/User/useCreateUser";
 import { ICreateUser } from "../../../interfaces";
 import { ContainerS } from "./styles";
 import ButtonUtil from "../../../components/Button";

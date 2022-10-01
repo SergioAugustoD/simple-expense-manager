@@ -8,9 +8,9 @@ import ButtonUtil from "../../components/Button";
 import GridFinances from "../../components/GridFInances";
 import Modal from "../../components/Modal";
 import TextField from "@mui/material/TextField";
-import useModal from "../../hooks/useModal";
+import useModal from "../../hooks/Finance/useModal";
 import { ToastNotification } from "../../components/Utils/ToastNotification";
-import { useFinances } from "../../hooks/useFinances";
+import { useFinances } from "../../hooks/Finance/useFinances";
 import { FinancesContent, InfoNotLogin } from "./styles";
 
 type PropInsert = {

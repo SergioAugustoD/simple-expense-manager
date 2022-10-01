@@ -1,7 +1,7 @@
 import { useCallback } from "react";
-import { IInsertFinance } from "../interfaces/Finance/IInsertFinance";
-import { IUpdateFinance } from "../interfaces/Finance/IUpdateFinance";
-import { FinanceService } from "../services/Finance";
+import { IInsertFinance } from "../../interfaces/Finance/IInsertFinance";
+import { IUpdateFinance } from "../../interfaces/Finance/IUpdateFinance";
+import { FinanceService } from "../../services/Finance";
 
 export const useFinances = () => {
 

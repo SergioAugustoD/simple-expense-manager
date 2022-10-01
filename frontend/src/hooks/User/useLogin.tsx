@@ -1,5 +1,5 @@
-import { IUser } from "../interfaces/User/IUser";
-import { LoginService } from "../services/User/LoginService";
+import { IUser } from "../../interfaces/User/IUser";
+import { LoginService } from "../../services/User/LoginService";
 
 
 export const useLogin = () => ({
