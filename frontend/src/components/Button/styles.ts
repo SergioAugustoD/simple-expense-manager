@@ -2,14 +2,20 @@ import styled from "styled-components";
 import Button from "@mui/material/Button";
 
 export const ButtonS = styled(Button)`
-  
+    &&{
+      :hover {
+        background-color: rgba(215, 207, 211, 0.8);
+      }
+    }
+
   &.bt-add {
     background-color: #060b26;
     color: white;
+  }
 
-    &:hover {
-      background-color: none;
-    }
+  &.bt-remove {
+    background-color: red;
+    color: white;
   }
 
  &.button-default {

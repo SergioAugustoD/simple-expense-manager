@@ -1,3 +1,4 @@
+import { Dialog } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import styled from "styled-components";
 
@@ -20,4 +21,8 @@ export const H2Total = styled.h2`
 &.negativeTotal {
   color: red;
 }
+`;
+
+export const DialogS = styled(Dialog)`
+  z-index: 9999;
 `;

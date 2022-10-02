@@ -5,7 +5,6 @@ import * as AiIcons from "react-icons/ai";
 import { Link } from "react-router-dom";
 import ButtonsMenu from "./SliderData";
 import { IconContext } from "react-icons";
-import Card from "@mui/material/Card";
 import { Divider } from "@mui/material";
 import { UserService } from "../../services/User/UserService";
 import { CardS, NavBarS, NavS } from "./styles";

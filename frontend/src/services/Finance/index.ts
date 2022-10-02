@@ -8,8 +8,11 @@ const updateFinance = (dataUpdate: IUpdateFinance) => Api.post(`/finances/${data
 
 const insertFinance = (dataInsert: IInsertFinance) => Api.post("/finances/", dataInsert);
 
+const deleteFinance = (id: number) => Api.put(`/finances/${id}`);
+
 export const FinanceService = {
   listFinance,
   updateFinance,
-  insertFinance
+  insertFinance,
+  deleteFinance
 };

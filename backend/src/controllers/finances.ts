@@ -63,7 +63,9 @@ const deleteFinance = (req: Request, res: Response) => {
 
   financeModel.deleteFinance(id)
     .then((finance) => {
-      return { ok: ok(res), finance: finance };
+      res.json({
+        finance
+      });
     })
     .catch(err => internalServerError(res, err));
 };

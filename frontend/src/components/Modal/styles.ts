@@ -15,7 +15,7 @@ const animationModal = keyframes`
 `;
 
 export const ModalOverlay = styled.div`
-  z-index: 9999;
+  z-index: 999;
   width: 100vw;
   height: 100vh;
   position: absolute;
@@ -30,8 +30,8 @@ export const ModalOverlay = styled.div`
 export const ModalBox = styled.div`
   display: flex;
   background: white;
-  height: 30%;
-  width: 30vw;
+  height: 35vh;
+  width: 300px;
   padding: 1rem;
   border-radius: 1rem;
   flex-direction: column;

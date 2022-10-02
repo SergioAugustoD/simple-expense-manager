@@ -44,8 +44,15 @@ const listFinances = async (id_user: number) => {
 };
 
 const deleteFinance = async (id: number) => {
-  await dbQuery("DELETE FROM FINANCE WHERE id = ?", [id]);
+  try {
+    await dbQuery("DELETE FROM FINANCE WHERE id = ?", [id]);
+    return { msg: "Registro deletado com sucesso !" };
+  } catch (error: any) {
+    return { err: error.message };
+  }
+
 };
+
 export const financeModel = {
   insertFinance,
   listFinances,

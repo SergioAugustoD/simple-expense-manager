@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box } from "@mui/material";
+import { Box, InputAdornment } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
@@ -9,7 +9,13 @@ import Modal from "../Modal";
 import useModal from "../../hooks/Finance/useModal";
 import TextField from "@mui/material/TextField";
 import { ToastNotification } from "../Utils/ToastNotification";
-import { DataGridS, H2Total } from "./styles";
+import { DataGridS, DialogS, H2Total } from "./styles";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import ButtonUtil from "../Button";
+import { NumericFormat } from "react-number-format";
+
 
 type PropUpdate = {
   id: number;
@@ -22,9 +28,10 @@ const GridFinances = () => {
   const [dataFinance, setDataFinance] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [total, setTotal] = useState(0);
-  const { getListFinances, updateFinance } = useFinances();
+  const { getListFinances, updateFinance, deleteFinance } = useFinances();
   const [dataFinanceUpdate, setDataFinanceUpdate] = useState<PropUpdate>({ id: null, amount: 0, description: "", type: "" });
   const { isOpen, toggle } = useModal();
+  const [open, setOpen] = React.useState(false);
 
   const currencyFormatter = new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -74,8 +81,9 @@ const GridFinances = () => {
     });
 
   const handleSubmit = async () => {
+    console.log(dataFinanceUpdate.amount);
     await updateFinance(dataFinanceUpdate)
-      .then((res) => {
+      .then((res: any) => {
         if (res.finance.err) {
           ToastNotification.toastError(res.finance.err);
         }
@@ -84,7 +92,29 @@ const GridFinances = () => {
       });
 
   };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleDelete = async () => {
+    await deleteFinance(dataFinanceUpdate.id)
+      .then((res: any) => {
+        console.log(res);
+        if (res) {
+          ToastNotification.toastSuccess(res.finance.msg);
+          setOpen(false);
+          toggle();
+          console.log(res);
+        } else {
+          ToastNotification.toastError(res.finance);
+        }
+      });
+
+  };
   useEffect(() => {
     const getFinances = async () => {
       const data = await getListFinances(parseInt(localStorage.getItem("id_user")));
@@ -108,6 +138,21 @@ const GridFinances = () => {
       <Box>
         {/* <button onClick={toggle} disabled={dataFinanceUpdate.id ? false : true}>Open Modal </button> */}
         <Modal isOpen={isOpen} toggle={toggle}>
+          <DialogS
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="responsive-dialog-title"
+          >
+            <DialogContent>
+              <DialogContentText>
+                Você realmente deseja excluir este registro ?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <ButtonUtil onClick={handleClose} title="Não" />
+              <ButtonUtil onClick={handleDelete} title="Sim" />
+            </DialogActions>
+          </DialogS>
           <FormControl>
             <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
             <NativeSelect
@@ -118,17 +163,35 @@ const GridFinances = () => {
               <option value='E'>Entrada</option>
             </NativeSelect>
           </FormControl>
-          <TextField
-            label='Valor'
-            defaultValue={dataFinanceUpdate.amount}
-            onChange={(e) => setDataFinanceUpdate({ ...dataFinanceUpdate, amount: parseFloat(e.target.value) })}
+          <NumericFormat
+            onValueChange={(values) => {
+              setDataFinanceUpdate({ ...dataFinanceUpdate, amount: values.floatValue });
+            }}
+            value={dataFinanceUpdate.amount}
+            prefix={"R$ "}
+            allowLeadingZeros
+            decimalSeparator=","
+            thousandSeparator="."
+            decimalScale={2}
+            customInput={TextField}
+            type="text"
           />
+          {/* <TextField
+            label='Valor'
+            type="number"
+            defaultValue={dataFinanceUpdate.amount}
+            InputProps={{
+              startAdornment: <InputAdornment position="start">R$</InputAdornment>
+            }}
+            onChange={(e) => setDataFinanceUpdate({ ...dataFinanceUpdate, amount: parseFloat(e.target.value) })}
+          /> */}
           <TextField
             label='Descrição'
             defaultValue={dataFinanceUpdate.description}
             onChange={(e) => setDataFinanceUpdate({ ...dataFinanceUpdate, description: e.target.value })}
           />
-          <button onClick={handleSubmit}>Enviar </button>
+          <ButtonUtil onClick={handleSubmit} className="bt-add" title="Atualizar" />
+          <ButtonUtil onClick={handleClickOpen} className="bt-remove" title="Deletar" />
         </Modal>
         <DataGridS
           sx={{
@@ -151,7 +214,7 @@ const GridFinances = () => {
             }
           }}
           columnVisibilityModel={columnVisibilityModel}
-          onColumnVisibilityModelChange={(newModel) =>
+          onColumnVisibilityModelChange={(newModel: any) =>
             setColumnVisibilityModel(newModel)
           }
           loading={isLoading}

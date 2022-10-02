@@ -20,9 +20,15 @@ export const useFinances = () => {
     return data;
   }, []);
 
+  const deleteFinance = useCallback(async (id: number) => {
+    const { data } = await FinanceService.deleteFinance(id);
+    return data;
+  }, []);
+
   return {
     getListFinances,
     updateFinance,
-    insertFinance
+    insertFinance,
+    deleteFinance
   };
 };

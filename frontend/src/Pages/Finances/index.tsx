@@ -12,6 +12,7 @@ import useModal from "../../hooks/Finance/useModal";
 import { ToastNotification } from "../../components/Utils/ToastNotification";
 import { useFinances } from "../../hooks/Finance/useFinances";
 import { FinancesContent, InfoNotLogin } from "./styles";
+import { NumericFormat } from "react-number-format";
 
 type PropInsert = {
   amount: number;
@@ -27,16 +28,18 @@ const Finances = () => {
   const { isOpen, toggle } = useModal();
 
   const handleSubmit = useCallback(async () => {
-    if (dataFinanceInsert.type === "") {
+    if (!dataFinanceInsert.type) {
       ToastNotification.toastError("Informe o tipo ");
+    } else {
+      const data = await insertFinance(dataFinanceInsert);
+      if (data.finance.err) {
+        ToastNotification.toastError(data.finance.err);
+      }
+      ToastNotification.toastSuccess(data.finance.msg);
+      toggle();
+      window.location.reload();
     }
-    const data = await insertFinance(dataFinanceInsert);
-    if (data.finance.err) {
-      ToastNotification.toastError(data.finance.err);
-    }
-    ToastNotification.toastSuccess(data.finance.msg);
-    toggle();
-    window.location.reload();
+
   }, [dataFinanceInsert, insertFinance, toggle]);
   return (
     <div >
@@ -46,16 +49,29 @@ const Finances = () => {
           <NativeSelect
             onChange={(e) => setDataFinanceInsert({ ...dataFinanceInsert, type: e.target.value })}
           >
-            <option value='#'>#</option>
+            <option value=''></option>
             <option value='S'>Saida</option>
             <option value='E'>Entrada</option>
           </NativeSelect>
         </FormControl>
-        <TextField
+        <NumericFormat
+          onValueChange={(values) => {
+            setDataFinanceInsert({ ...dataFinanceInsert, amount: values.floatValue });
+          }}
+          value={dataFinanceInsert.amount}
+          prefix={"R$ "}
+          allowLeadingZeros
+          decimalSeparator=","
+          thousandSeparator="."
+          decimalScale={2}
+          customInput={TextField}
+          type="text"
+        />
+        {/* <TextField
           label='Valor'
           defaultValue={dataFinanceInsert.amount}
           onChange={(e) => setDataFinanceInsert({ ...dataFinanceInsert, amount: parseFloat(e.target.value) })}
-        />
+        /> */}
         <TextField
           label='Descrição'
           defaultValue={dataFinanceInsert.description}
