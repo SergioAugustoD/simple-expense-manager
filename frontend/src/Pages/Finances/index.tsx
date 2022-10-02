@@ -9,6 +9,8 @@ import GridFinances from "../../components/GridFInances";
 import Modal from "../../components/Modal";
 import TextField from "@mui/material/TextField";
 import useModal from "../../hooks/Finance/useModal";
+import * as FiIcons from "react-icons/fi";
+import * as IoIcons from "react-icons/io";
 import { ToastNotification } from "../../components/Utils/ToastNotification";
 import { useFinances } from "../../hooks/Finance/useFinances";
 import { FinancesContent, InfoNotLogin } from "./styles";
@@ -77,7 +79,7 @@ const Finances = () => {
           defaultValue={dataFinanceInsert.description}
           onChange={(e) => setDataFinanceInsert({ ...dataFinanceInsert, description: e.target.value })}
         />
-        <button onClick={handleSubmit}>Enviar </button>
+        <ButtonUtil onClick={handleSubmit} title="Enviar" className="bt-add" endIcon={<FiIcons.FiSend />} />
       </Modal>
       {!localStorage.getItem("authToken") ?
         <InfoNotLogin>
@@ -87,7 +89,7 @@ const Finances = () => {
         :
         <FinancesContent>
           <div className="buttons-main">
-            <ButtonUtil title="Adicionar" onClick={toggle} className="bt-add" variant="contained" />
+            <ButtonUtil title="Adicionar" onClick={toggle} className="bt-add" variant="contained" endIcon={<IoIcons.IoMdAddCircleOutline />} />
           </div>
           <div className="grid-data">
             <GridFinances />

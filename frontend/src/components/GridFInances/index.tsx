@@ -6,6 +6,7 @@ import NativeSelect from "@mui/material/NativeSelect";
 import { useFinances } from "../../hooks/Finance/useFinances";
 import { GridColumnVisibilityModel, GridRowClassNameParams, GridRowParams, GridValueFormatterParams } from "@mui/x-data-grid";
 import Modal from "../Modal";
+import * as AiIcons from "react-icons/ai";
 import useModal from "../../hooks/Finance/useModal";
 import TextField from "@mui/material/TextField";
 import { ToastNotification } from "../Utils/ToastNotification";
@@ -81,7 +82,6 @@ const GridFinances = () => {
     });
 
   const handleSubmit = async () => {
-    console.log(dataFinanceUpdate.amount);
     await updateFinance(dataFinanceUpdate)
       .then((res: any) => {
         if (res.finance.err) {
@@ -103,12 +103,12 @@ const GridFinances = () => {
   const handleDelete = async () => {
     await deleteFinance(dataFinanceUpdate.id)
       .then((res: any) => {
-        console.log(res);
+
         if (res) {
           ToastNotification.toastSuccess(res.finance.msg);
           setOpen(false);
           toggle();
-          console.log(res);
+
         } else {
           ToastNotification.toastError(res.finance);
         }
@@ -190,8 +190,8 @@ const GridFinances = () => {
             defaultValue={dataFinanceUpdate.description}
             onChange={(e) => setDataFinanceUpdate({ ...dataFinanceUpdate, description: e.target.value })}
           />
-          <ButtonUtil onClick={handleSubmit} className="bt-add" title="Atualizar" />
-          <ButtonUtil onClick={handleClickOpen} className="bt-remove" title="Deletar" />
+          <ButtonUtil onClick={handleSubmit} className="bt-add" title="Atualizar" endIcon={<AiIcons.AiOutlineSync />} />
+          <ButtonUtil onClick={handleClickOpen} className="bt-remove" title="Deletar" endIcon={<AiIcons.AiFillDelete />} />
         </Modal>
         <DataGridS
           sx={{
