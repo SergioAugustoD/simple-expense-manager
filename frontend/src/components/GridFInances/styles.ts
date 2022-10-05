@@ -1,26 +1,21 @@
-import { Dialog } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import Dialog from "@mui/material/Dialog";
 import styled from "styled-components";
 
 export const DataGridS = styled(DataGrid)`
   .rowGreen {
-    background-color: rgb(26, 114, 26);
+    background-color: green;
     color: black;
   }
   .rowRed {
-  background: rgb(216, 94, 94);
+  background: red;
   color: black;
 }
-`;
-
-export const H2Total = styled.h2`
- &.positiveTotal {
-  color: green;
+.colorCell {
+  background: lightgray;
 }
 
-&.negativeTotal {
-  color: red;
-}
+
 `;
 
 export const DialogS = styled(Dialog)`

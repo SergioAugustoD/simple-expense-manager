@@ -40,7 +40,11 @@ const updateFinance = async (finance: Finance) => {
 
 const listFinances = async (id_user: number) => {
   const retorno = await dbQuery("SELECT * FROM FINANCE WHERE id_user = ?", [id_user]);
-  return retorno as Finance[];
+  const amountIn = await dbQuery("SELECT ifnull(SUM(amount),0) as amountin FROM FINANCE WHERE id_user = ? AND Type = 'E'", [id_user]);
+  const amountOut = await dbQuery("SELECT ifnull(SUM(amount),0) as amountout FROM FINANCE WHERE id_user = ? AND Type = 'S'", [id_user]);
+
+  return { data: retorno as Finance[], amountIn: amountIn[0].amountin, amountOut: amountOut[0].amountout };
+
 };
 
 const deleteFinance = async (id: number) => {

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Link } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
@@ -13,8 +13,9 @@ import * as FiIcons from "react-icons/fi";
 import * as IoIcons from "react-icons/io";
 import { ToastNotification } from "../../components/Utils/ToastNotification";
 import { useFinances } from "../../hooks/Finance/useFinances";
-import { FinancesContent, InfoNotLogin } from "./styles";
+import { CardS, FinancesContent, InfoNotLogin, StackS } from "./styles";
 import { NumericFormat } from "react-number-format";
+import { H2Total } from "../Finances/styles";
 
 type PropInsert = {
   amount: number;
@@ -25,10 +26,16 @@ type PropInsert = {
 
 const Finances = () => {
   const navigate = useNavigate();
-  const { insertFinance } = useFinances();
+  const { insertFinance, getListFinances } = useFinances();
   const [dataFinanceInsert, setDataFinanceInsert] = useState<PropInsert>({ amount: 0, description: "", type: "", id_user: parseInt(localStorage.getItem("id_user")) });
   const { isOpen, toggle } = useModal();
+  const [amountIn, setAmountIn] = useState("");
+  const [amountOut, setAmountOut] = useState("");
 
+  const currencyFormatter = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
   const handleSubmit = useCallback(async () => {
     if (!dataFinanceInsert.type) {
       ToastNotification.toastError("Informe o tipo ");
@@ -43,6 +50,17 @@ const Finances = () => {
     }
 
   }, [dataFinanceInsert, insertFinance, toggle]);
+
+  useEffect(() => {
+    const getFinances = async () => {
+      const finances = await getListFinances(parseInt(localStorage.getItem("id_user")));
+      if (finances.data) {
+        setAmountIn(finances.amountIn);
+        setAmountOut(finances.amountOut);
+      }
+    };
+    getFinances();
+  }, []);
   return (
     <div >
       <Modal isOpen={isOpen} toggle={toggle}>
@@ -69,11 +87,6 @@ const Finances = () => {
           customInput={TextField}
           type="text"
         />
-        {/* <TextField
-          label='Valor'
-          defaultValue={dataFinanceInsert.amount}
-          onChange={(e) => setDataFinanceInsert({ ...dataFinanceInsert, amount: parseFloat(e.target.value) })}
-        /> */}
         <TextField
           label='Descrição'
           defaultValue={dataFinanceInsert.description}
@@ -89,6 +102,15 @@ const Finances = () => {
         :
         <FinancesContent>
           <div className="buttons-main">
+            <StackS>
+              <CardS backgroundColor="green">
+                {currencyFormatter.format(parseFloat(amountIn))}
+              </CardS>
+              <CardS backgroundColor="red">
+                {currencyFormatter.format(parseFloat(amountOut))}
+              </CardS>
+              <H2Total className={`${(parseFloat(amountIn) - parseFloat(amountOut)) >= 0 ? "positiveTotal" : "negativeTotal"}`}>Total: {currencyFormatter.format(parseFloat(amountIn) - parseFloat(amountOut))}</H2Total>
+            </StackS>
             <ButtonUtil title="Adicionar" onClick={toggle} className="bt-add" variant="contained" endIcon={<IoIcons.IoMdAddCircleOutline />} />
           </div>
           <div className="grid-data">

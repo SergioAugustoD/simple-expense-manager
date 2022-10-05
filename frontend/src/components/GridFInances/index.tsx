@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Box, InputAdornment } from "@mui/material";
+import { Box } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
 import { useFinances } from "../../hooks/Finance/useFinances";
-import { GridColumnVisibilityModel, GridRowClassNameParams, GridRowParams, GridValueFormatterParams } from "@mui/x-data-grid";
+import { GridCellParams, GridColumnVisibilityModel, GridRowParams, GridValueFormatterParams } from "@mui/x-data-grid";
 import Modal from "../Modal";
 import * as AiIcons from "react-icons/ai";
 import useModal from "../../hooks/Finance/useModal";
 import TextField from "@mui/material/TextField";
 import { ToastNotification } from "../Utils/ToastNotification";
-import { DataGridS, DialogS, H2Total } from "./styles";
+import { DataGridS, DialogS } from "./styles";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import ButtonUtil from "../Button";
 import { NumericFormat } from "react-number-format";
-
+import { localizedTextsMap } from "./TranslationsGrid";
 
 type PropUpdate = {
   id: number;
@@ -28,7 +28,6 @@ type PropUpdate = {
 const GridFinances = () => {
   const [dataFinance, setDataFinance] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [total, setTotal] = useState(0);
   const { getListFinances, updateFinance, deleteFinance } = useFinances();
   const [dataFinanceUpdate, setDataFinanceUpdate] = useState<PropUpdate>({ id: null, amount: 0, description: "", type: "" });
   const { isOpen, toggle } = useModal();
@@ -73,6 +72,13 @@ const GridFinances = () => {
           return "Entrada";
         }
       },
+      cellClassName: (params: GridCellParams<string>) => {
+        if (params.value === "S") {
+          return "rowRed";
+        } else {
+          return "rowGreen";
+        }
+      },
     }
   ];
 
@@ -89,6 +95,7 @@ const GridFinances = () => {
         }
         ToastNotification.toastSuccess(res.finance.msg);
         toggle();
+        window.location.reload();
       });
 
   };
@@ -117,26 +124,18 @@ const GridFinances = () => {
   };
   useEffect(() => {
     const getFinances = async () => {
-      const data = await getListFinances(parseInt(localStorage.getItem("id_user")));
-      if (data) {
-        const caclTotal = data.reduce((sum: number, finance: any) => {
-          if (finance.type === "S")
-            return sum - parseFloat(finance.amount);
-          else
-            return sum + parseFloat(finance.amount);
-        }, 0);
-        setDataFinance(data);
-        setTotal(caclTotal);
+      const finances = await getListFinances(parseInt(localStorage.getItem("id_user")));
+      if (finances.data) {
+        setDataFinance(finances.data);
         setIsLoading(false);
       }
     };
     getFinances();
-  }, [getListFinances, isOpen]);
+  }, []);
 
   return (
-    <div>
+    <>
       <Box>
-        {/* <button onClick={toggle} disabled={dataFinanceUpdate.id ? false : true}>Open Modal </button> */}
         <Modal isOpen={isOpen} toggle={toggle}>
           <DialogS
             open={open}
@@ -176,15 +175,6 @@ const GridFinances = () => {
             customInput={TextField}
             type="text"
           />
-          {/* <TextField
-            label='Valor'
-            type="number"
-            defaultValue={dataFinanceUpdate.amount}
-            InputProps={{
-              startAdornment: <InputAdornment position="start">R$</InputAdornment>
-            }}
-            onChange={(e) => setDataFinanceUpdate({ ...dataFinanceUpdate, amount: parseFloat(e.target.value) })}
-          /> */}
           <TextField
             label='Descrição'
             defaultValue={dataFinanceUpdate.description}
@@ -195,6 +185,8 @@ const GridFinances = () => {
         </Modal>
         <DataGridS
           sx={{
+            border: "0"
+            ,
             ".MuiDataGrid-row:hover": {
               opacity: "1"
             },
@@ -223,13 +215,8 @@ const GridFinances = () => {
           disableSelectionOnClick
           pageSize={10}
           rowsPerPageOptions={[10]}
-          getRowClassName={(params: GridRowClassNameParams) => {
-            if (params.row.type === "E") {
-              return "rowGreen";
-            }
-            if (params.row.type === "S") {
-              return "rowRed";
-            }
+          getRowClassName={() => {
+            return "colorCell";
           }}
           autoHeight={true}
           density='standard'
@@ -237,11 +224,10 @@ const GridFinances = () => {
             setDataFinanceUpdate({ id: params.row.id, amount: params.row.amount, description: params.row.description, type: params.row.type });
             toggle();
           }}
+          localeText={localizedTextsMap}
         />
       </Box>
-      <H2Total className={`${Math.sign(total) >= 0 ? "positiveTotal" : "negativeTotal"}`}>Total: {currencyFormatter.format(total)}</H2Total>
-    </div>
-
+    </>
   );
 };
 
