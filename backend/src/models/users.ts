@@ -8,6 +8,8 @@ export type User = {
   email: string;
   login: string;
   password: string;
+  oldPassword?: string;
+  newPassword?: string;
   token?: string;
 }
 
@@ -25,16 +27,33 @@ const insertUser = async (user: User) => {
   return { msg: "Usuário criado com sucesso!" };
 };
 
-const updateUser = async (user: User) => {
-  if (user.name)
-    await dbQuery("UPDATE users SET name = ? WHERE ID = ? ", [user.name, user.id]);
-  if (user.login)
-    await dbQuery("UPDATE users SET login = ? WHERE ID = ? ", [user.login, user.id]);
-  if (user.password)
-    await dbQuery("UPDATE users SET password = ? WHERE ID = ? ", [await generatePassword(user.password), user.id]);
+const getInfoUser = async (id_user: number) => {
+  const infoUser = await dbQuery("SELECT name,email FROM users where id = ?", [id_user]);
 
-  const retorno = await dbQuery("SELECT * FROM users where id = ? ", [user.id]);
-  return retorno[0];
+  return infoUser[0];
+};
+
+const updateUser = async (user: User) => {
+
+  try {
+    const password = await dbQuery("SELECT password from users where id = ?", [user.id]);
+
+    if (user.name)
+      await dbQuery("UPDATE users SET name = ? WHERE ID = ? ", [user.name, user.id]);
+    if (user.email)
+      await dbQuery("UPDATE users SET email = ? WHERE ID = ? ", [user.email, user.id]);
+    if (user.oldPassword)
+      if (await checkPassword(user.oldPassword, password[0].password))
+        await dbQuery("UPDATE users SET password = ? WHERE ID = ? ", [await generatePassword(user.newPassword!), user.id]);
+      else
+        return { err: "Senha incorreta, verifique!" };
+
+    return { msg: "Atualizado com sucesso!" };
+  } catch (error: any) {
+    console.log(error.message);
+    return { err: "Erro interno, verifique com o administrador" };
+  }
+
 };
 
 const getNameUser = async (id_user: number) => {
@@ -50,6 +69,7 @@ const getNameUser = async (id_user: number) => {
     console.log(error);
   }
 };
+
 const checkLogin = async (user: User) => {
   try {
     const login = await dbQuery("SELECT login from users where login = ?", [user.login]);
@@ -91,5 +111,6 @@ export const userModel = {
   updateUser,
   checkLogin,
   checkAuthToken,
-  getNameUser
+  getNameUser,
+  getInfoUser
 };

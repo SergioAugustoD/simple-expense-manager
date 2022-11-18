@@ -49,9 +49,12 @@ function Navbar() {
               <Divider />
               {auth.user &&
                 <>
-                  <div className="text-welcome">
-                    {<FaIcons.FaRegUserCircle size='1.2em' />}<h3>{`${name.nameUser}`}</h3>
-                  </div>
+                  <ButtonsMenu
+                    icon={<AiIcons.AiOutlineUser size={30} />}
+                    className='nav-text'
+                    path='/updateuser'
+                    title={`${name.nameUser}`}
+                  />
                 </>
               }
             </CardS>

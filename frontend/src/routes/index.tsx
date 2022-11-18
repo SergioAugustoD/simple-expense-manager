@@ -6,6 +6,7 @@ import Login from "../Pages/User/Login";
 
 import Home from "../Pages/Home";
 import CreateUser from "../Pages/User/CreateUser/index";
+import UpdateUser from "../Pages/User/UpdateUser";
 
 export const AppRoutes = () => {
   return (
@@ -14,6 +15,7 @@ export const AppRoutes = () => {
       <Route path='/finances' element={<Finances />} />
       <Route path='/login' element={<Login />} />
       <Route path='/createuser' element={<CreateUser />} />
+      <Route path='/updateuser' element={<UpdateUser />} />
     </Routes>
   );
 };

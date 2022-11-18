@@ -26,11 +26,6 @@ const insertUser = (req: Request, res: Response) => {
 };
 
 const updateUser = (req: Request, res: Response) => {
-  const id = parseInt(req.params.id);
-  {
-    if (!validateNumber(id))
-      return badRequest(res, "id inválido");
-  }
   const user = req.body as User;
   userModel.updateUser(user)
     .then(user => {
@@ -68,6 +63,16 @@ const getName = (req: Request, res: Response) => {
 
 };
 
+const getInfo = (req: Request, res: Response) => {
+
+  const id_user = parseInt(req.params.id_user);
+
+  userModel.getInfoUser(id_user)
+    .then(info => {
+      res.json(info);
+    });
+
+};
 const checkToken = (req: Request, res: Response) => {
   const data = req.body;
   userModel.checkAuthToken(data.token)
@@ -89,5 +94,6 @@ export const userController = {
   userLogin,
   logout,
   checkToken,
-  getName
+  getName,
+  getInfo
 };

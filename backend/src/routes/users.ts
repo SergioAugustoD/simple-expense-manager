@@ -5,9 +5,10 @@ const userRouter = Router();
 userRouter.post("/", userController.insertUser);
 userRouter.post("/login", userController.userLogin);
 userRouter.post("/logout", userController.logout);
-userRouter.put("/:id", userController.updateUser);
+userRouter.post("/updateuser/", userController.updateUser);
 userRouter.post("/checktoken", userController.checkToken);
 userRouter.get("/name-user/:id_user", userController.getName);
+userRouter.get("/infouser/:id_user", userController.getInfo);
 
 export {
   userRouter

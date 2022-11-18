@@ -64,14 +64,7 @@ const GridFinances = () => {
     {
       field: "type",
       headerName: "Tipo",
-      flex: 0.2,
-      valueFormatter: (params: GridValueFormatterParams) => {
-        if (params.value === "S") {
-          return "Saida";
-        } else {
-          return "Entrada";
-        }
-      },
+      flex: 0.1,
       cellClassName: (params: GridCellParams<string>) => {
         if (params.value === "S") {
           return "rowRed";
@@ -131,7 +124,7 @@ const GridFinances = () => {
       }
     };
     getFinances();
-  }, []);
+  }, [open]);
 
   return (
     <>

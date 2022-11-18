@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import React, { useCallback, useState } from "react";
-import { useCreateUser } from "../../../hooks/User/useCreateUser";
+import { useUser } from "../../../hooks/User/useUser";
 import { ICreateUser } from "../../../interfaces";
 import { ContainerS } from "./styles";
 import ButtonUtil from "../../../components/Button";
@@ -13,7 +13,7 @@ import { ToastNotification } from "../../../components/Utils/ToastNotification";
 const CreateUser = () => {
 
   const navigate = useNavigate();
-  const { createUser } = useCreateUser();
+  const { createUser } = useUser();
   const [dataUser, setDataUser] = useState<ICreateUser>({ name: "", email: "", login: "", password: "" });
 
   const handleSubmit = useCallback(async () => {
