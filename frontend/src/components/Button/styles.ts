@@ -6,6 +6,10 @@ export const ButtonS = styled(Button)`
       :hover {
         background-color: rgba(215, 207, 211, 0.8);
       }
+      @media (max-width: 665px) {
+      width: 90px;
+      font-size: 10px;
+    }
     }
 
   &.bt-add {

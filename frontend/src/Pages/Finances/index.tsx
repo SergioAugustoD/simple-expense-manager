@@ -3,6 +3,7 @@ import { Link } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
+import Container from "@mui/material/Container";
 import { useNavigate } from "react-router-dom";
 import ButtonUtil from "../../components/Button";
 import GridFinances from "../../components/GridFInances";
@@ -15,7 +16,6 @@ import { ToastNotification } from "../../components/Utils/ToastNotification";
 import { useFinances } from "../../hooks/Finance/useFinances";
 import { CardS, FinancesContent, InfoNotLogin, StackS } from "./styles";
 import { NumericFormat } from "react-number-format";
-import { H2Total } from "../Finances/styles";
 
 type PropInsert = {
   amount: number;
@@ -62,7 +62,7 @@ const Finances = () => {
     getFinances();
   }, []);
   return (
-    <div >
+    <div>
       <Modal isOpen={isOpen} toggle={toggle}>
         <FormControl>
           <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
@@ -101,18 +101,25 @@ const Finances = () => {
         </InfoNotLogin>
         :
         <FinancesContent>
-          <div className="buttons-main">
-            <StackS>
-              <CardS backgroundColor="green">
-                {currencyFormatter.format(parseFloat(amountIn))}
-              </CardS>
-              <CardS backgroundColor="red">
-                {currencyFormatter.format(parseFloat(amountOut))}
-              </CardS>
-              <H2Total className={`${(parseFloat(amountIn) - parseFloat(amountOut)) >= 0 ? "positiveTotal" : "negativeTotal"}`}>Total: {currencyFormatter.format(parseFloat(amountIn) - parseFloat(amountOut))}</H2Total>
-            </StackS>
-            <ButtonUtil title="Adicionar" onClick={toggle} className="bt-add" variant="contained" endIcon={<IoIcons.IoMdAddCircleOutline />} />
-          </div>
+          <Container maxWidth="md">
+            <div className="buttons-main">
+              <StackS>
+                <CardS backgroundColor="green">
+                  <h4>Entrada</h4>
+                  {currencyFormatter.format(parseFloat(amountIn))}
+                </CardS>
+                <CardS backgroundColor="red">
+                  <h4>Saída</h4>
+                  {currencyFormatter.format(parseFloat(amountOut))}
+                </CardS>
+                <CardS backgroundColor={(parseFloat(amountIn) - parseFloat(amountOut)) < 0 ? "red" : "green"}>
+                  <h4>Total</h4>
+                  {currencyFormatter.format(parseFloat(amountIn) - parseFloat(amountOut))}
+                </CardS>
+              </StackS>
+              <ButtonUtil title="Adicionar" onClick={toggle} className="bt-add" variant="contained" endIcon={<IoIcons.IoMdAddCircleOutline />} />
+            </div>
+          </Container>
           <div className="grid-data">
             <GridFinances />
           </div>

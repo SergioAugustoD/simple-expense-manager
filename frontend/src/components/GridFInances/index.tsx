@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
 import { useFinances } from "../../hooks/Finance/useFinances";
-import { GridCellParams, GridColumnVisibilityModel, GridRowParams, GridValueFormatterParams } from "@mui/x-data-grid";
+import { GridColumnVisibilityModel, GridRenderCellParams, GridRowParams, GridValueFormatterParams } from "@mui/x-data-grid";
 import Modal from "../Modal";
 import * as AiIcons from "react-icons/ai";
 import useModal from "../../hooks/Finance/useModal";
@@ -62,14 +62,19 @@ const GridFinances = () => {
       flex: 1,
     },
     {
+      field: "created_on",
+      headerName: "Data",
+      flex: 0.3,
+    },
+    {
       field: "type",
       headerName: "Tipo",
       flex: 0.1,
-      cellClassName: (params: GridCellParams<string>) => {
+      renderCell: (params: GridRenderCellParams<any>) => {
         if (params.value === "S") {
-          return "rowRed";
+          return <AiIcons.AiFillDownCircle color="red" size={40} />;
         } else {
-          return "rowGreen";
+          return <AiIcons.AiFillUpCircle color="green" size={40} />;
         }
       },
     }
@@ -108,6 +113,7 @@ const GridFinances = () => {
           ToastNotification.toastSuccess(res.finance.msg);
           setOpen(false);
           toggle();
+          window.location.reload();
 
         } else {
           ToastNotification.toastError(res.finance);
@@ -125,57 +131,56 @@ const GridFinances = () => {
     };
     getFinances();
   }, [open]);
-
   return (
     <>
-      <Box>
-        <Modal isOpen={isOpen} toggle={toggle}>
-          <DialogS
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="responsive-dialog-title"
+      <Modal isOpen={isOpen} toggle={toggle}>
+        <DialogS
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="responsive-dialog-title"
+        >
+          <DialogContent>
+            <DialogContentText>
+              Você realmente deseja excluir este registro ?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <ButtonUtil onClick={handleClose} title="Não" />
+            <ButtonUtil onClick={handleDelete} title="Sim" />
+          </DialogActions>
+        </DialogS>
+        <FormControl>
+          <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
+          <NativeSelect
+            defaultValue={dataFinanceUpdate.type}
+            onChange={(e) => setDataFinanceUpdate({ ...dataFinanceUpdate, type: e.target.value })}
           >
-            <DialogContent>
-              <DialogContentText>
-                Você realmente deseja excluir este registro ?
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <ButtonUtil onClick={handleClose} title="Não" />
-              <ButtonUtil onClick={handleDelete} title="Sim" />
-            </DialogActions>
-          </DialogS>
-          <FormControl>
-            <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
-            <NativeSelect
-              defaultValue={dataFinanceUpdate.type}
-              onChange={(e) => setDataFinanceUpdate({ ...dataFinanceUpdate, type: e.target.value })}
-            >
-              <option value='S'>Saida</option>
-              <option value='E'>Entrada</option>
-            </NativeSelect>
-          </FormControl>
-          <NumericFormat
-            onValueChange={(values) => {
-              setDataFinanceUpdate({ ...dataFinanceUpdate, amount: values.floatValue });
-            }}
-            value={dataFinanceUpdate.amount}
-            prefix={"R$ "}
-            allowLeadingZeros
-            decimalSeparator=","
-            thousandSeparator="."
-            decimalScale={2}
-            customInput={TextField}
-            type="text"
-          />
-          <TextField
-            label='Descrição'
-            defaultValue={dataFinanceUpdate.description}
-            onChange={(e) => setDataFinanceUpdate({ ...dataFinanceUpdate, description: e.target.value })}
-          />
-          <ButtonUtil onClick={handleSubmit} className="bt-add" title="Atualizar" endIcon={<AiIcons.AiOutlineSync />} />
-          <ButtonUtil onClick={handleClickOpen} className="bt-remove" title="Deletar" endIcon={<AiIcons.AiFillDelete />} />
-        </Modal>
+            <option value='S'>Saida</option>
+            <option value='E'>Entrada</option>
+          </NativeSelect>
+        </FormControl>
+        <NumericFormat
+          onValueChange={(values) => {
+            setDataFinanceUpdate({ ...dataFinanceUpdate, amount: values.floatValue });
+          }}
+          value={dataFinanceUpdate.amount}
+          prefix={"R$ "}
+          allowLeadingZeros
+          decimalSeparator=","
+          thousandSeparator="."
+          decimalScale={2}
+          customInput={TextField}
+          type="text"
+        />
+        <TextField
+          label='Descrição'
+          defaultValue={dataFinanceUpdate.description}
+          onChange={(e) => setDataFinanceUpdate({ ...dataFinanceUpdate, description: e.target.value })}
+        />
+        <ButtonUtil onClick={handleSubmit} className="bt-add" title="Atualizar" endIcon={<AiIcons.AiOutlineSync />} />
+        <ButtonUtil onClick={handleClickOpen} className="bt-remove" title="Deletar" endIcon={<AiIcons.AiFillDelete />} />
+      </Modal>
+      <Container maxWidth="md">
         <DataGridS
           sx={{
             border: "0"
@@ -219,7 +224,7 @@ const GridFinances = () => {
           }}
           localeText={localizedTextsMap}
         />
-      </Box>
+      </Container>
     </>
   );
 };

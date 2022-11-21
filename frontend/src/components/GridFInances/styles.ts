@@ -12,10 +12,8 @@ export const DataGridS = styled(DataGrid)`
   color: black;
 }
 .colorCell {
-  background: lightgray;
+  background: white;
 }
-
-
 `;
 
 export const DialogS = styled(Dialog)`

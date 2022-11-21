@@ -38,7 +38,15 @@ export const CardS = styled.div<PropsCards>`
     align-items: center;
     justify-content: center;
     height: 60px;
+    width: 150px;
+    flex-direction: column;
+
+    @media (max-width: 665px) {
+      width: 100px;
+      font-size: 12px;
+    }
   }
+ 
 `;
 
 export const StackS = styled.div`
