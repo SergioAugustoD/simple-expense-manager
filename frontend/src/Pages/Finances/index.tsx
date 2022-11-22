@@ -97,7 +97,6 @@ const Finances = () => {
       {!localStorage.getItem("authToken") ?
         <InfoNotLogin>
           <h2>Apenas usuários logados podem acessar esta página</h2>
-          <Link underline='hover' onClick={() => navigate("/login")} variant='inherit'>Clique aqui para logar</Link>
         </InfoNotLogin>
         :
         <FinancesContent>

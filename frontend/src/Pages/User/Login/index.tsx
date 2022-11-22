@@ -5,12 +5,13 @@ import { useContext } from "react";
 import { AuthContext } from "../../../context/Auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-import TextField from "@mui/material/TextField";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import SendAltIcon from "@mui/icons-material/Send";
 import ButtonUtil from "../../../components/Button/index";
-import { Box, Link } from "@mui/material";
-import { ContainerS } from "../CreateUser/styles";
+import { Box } from "@mui/material";
+import { ContainerS } from "./styles";
 import { ToastNotification } from "../../../components/Utils/ToastNotification";
+import { STextField } from "../../../styles/Global";
 
 
 const Login = () => {
@@ -40,11 +41,28 @@ const Login = () => {
     <>
       <ContainerS maxWidth="xs">
         <Box className='box-main'>
-          <TextField margin='dense' label="Login" variant="outlined" onChange={(e) => setDataLogin({ ...dataLogin, login: e.target.value })} />
-          <TextField type='password' margin='dense' label="Password" variant="outlined" onChange={(e) => setDataLogin({ ...dataLogin, password: e.target.value })} />
+          <STextField
+            placeholder="Usuário"
+            onChange={(e) => setDataLogin({ ...dataLogin, login: e.target.value })} />
+          <STextField
+            placeholder="Senha"
+            type='password'
+            onChange={(e) => setDataLogin({ ...dataLogin, password: e.target.value })} />
           <div className="buttons">
-            <ButtonUtil size='medium' variant='contained' color='primary' title='Login' endIcon={<PersonAddAltIcon />} onClick={handleSubmit} />
-            <Link underline='hover' onClick={() => navigate("/createuser")} variant='inherit'>Ainda não é usuário ? Clique aqui para cadastrar!</Link>
+            <ButtonUtil
+              size='medium'
+              variant='contained'
+              color='primary'
+              title='Logar'
+              endIcon={<SendAltIcon />}
+              onClick={handleSubmit} />
+            <ButtonUtil
+              size='medium'
+              variant='contained'
+              color='primary'
+              title='Cadastrar'
+              endIcon={<PersonAddAltIcon />}
+              onClick={() => navigate("/createuser")} />
           </div>
         </Box>
       </ContainerS>

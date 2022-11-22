@@ -8,6 +8,9 @@ export const ContainerS = styled(Container)`
     display: flex;
     flex-direction: column;
 
+    button{
+      width: 255px;
+    }
     &.buttons {
       display: flex;
       justify-content: center;

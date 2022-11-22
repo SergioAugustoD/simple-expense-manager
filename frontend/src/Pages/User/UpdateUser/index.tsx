@@ -24,7 +24,7 @@ const UpdateUser = () => {
       ToastNotification.toastError(data.user.err);
     }
     ToastNotification.toastSuccess(data.user.msg);
-    navigate("/");
+    window.location.reload();
   }, [navigate, updateUser, dataUser]);
 
   useEffect(() => {
@@ -46,8 +46,8 @@ const UpdateUser = () => {
     <>
       <ContainerS maxWidth="xs">
         <Box className='box-main'>
-          <TextField margin='dense' label="Nome" variant="outlined" value={dataInfo.name} onChange={(e) => setDataUser({ ...dataUser, name: e.target.value })} />
-          <TextField margin='dense' label="Email" variant="outlined" value={dataInfo.email} onChange={(e) => setDataUser({ ...dataUser, email: e.target.value })} />
+          <TextField margin='dense' variant="outlined" placeholder={dataInfo.name} onChange={(e) => setDataUser({ ...dataUser, name: e.target.value ? e.target.value : dataInfo.name })} />
+          <TextField margin='dense' variant="outlined" placeholder={dataInfo.email} onChange={(e) => setDataUser({ ...dataUser, email: e.target.value ? e.target.value : dataInfo.email })} />
           <TextField margin='dense' label="Senha antiga" variant="outlined" type='password' onChange={(e) => setDataUser({ ...dataUser, oldPassword: e.target.value })} />
           <TextField margin='dense' label="Senha nova" variant="outlined" type='password' onChange={(e) => setDataUser({ ...dataUser, newPassword: e.target.value })} />
           <ButtonUtil size='medium' variant='contained' endIcon={<SendIcon />} title='Enviar' onClick={handleSubmit} />

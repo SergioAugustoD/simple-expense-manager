@@ -1,3 +1,4 @@
+import { Dialog, DialogActions, DialogContent } from "@mui/material";
 import Card from "@mui/material/Card";
 import styled from "styled-components";
 
@@ -103,4 +104,22 @@ export const CardS = styled(Card)`
     }
   }
 
+`;
+
+export const DialogS = styled(Dialog)`
+  z-index: 9999;
+`;
+
+export const SDialogContent = styled(DialogContent)`
+  display: flex;
+  width: 340px;
+  height: 300px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+export const SDialogActions = styled(DialogActions)`
+  display: flex;
+  flex-direction: row;
 `;

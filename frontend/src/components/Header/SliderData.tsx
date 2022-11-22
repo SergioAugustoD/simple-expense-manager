@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 interface PropsButtonsMenu {
   className?: string;
-  path: string;
+  path?: string;
   icon: IconBaseProps;
   title: string;
   onClick?: () => void;

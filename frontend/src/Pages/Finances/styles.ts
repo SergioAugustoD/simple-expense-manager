@@ -26,6 +26,9 @@ export const InfoNotLogin = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 85vh;
+  justify-content: center;
+
 `;
 export const CardS = styled.div<PropsCards>`
   &&{
